@@ -1,6 +1,7 @@
 // TASK: import helper functions from utils
 // TASK: import initialData
-
+import {getTasks, saveTasks, createNewTask, patchTask, putTask, deleteTask } from './utils/taskFunctions.js';
+import {initialData} from './initialData.js';
 
 /*************************************************************************************************************************************************
  * FIX BUGS!!!
@@ -18,8 +19,31 @@ function initializeData() {
 
 // TASK: Get elements from the DOM
 const elements = {
+// Sidebar Elements:
+sideBarDiv: document.getElementById('side-bar-div'),
+boardsNavLinksDiv: document.getElementById('boards-nav-links-div'),
+showSideBarBtn: document.getElementById('show-side-bar-btn'),
+hideSideBarBtn: document.getElementById('hide-side-bar-btn'),
+filterDiv: document.getElementById('filterDiv'),
+themeSwitch: document.getElementById('switch'),
 
-}
+//Header Elements:
+headerBoardName: document.getElementById('header-board-name'),
+addNewTaskBtn: document.getElementById('add-new-task-btn'),
+editBoardBtn: document.getElementById('edit-board-btn'),
+
+//Task Column Elements: Query SelectorAll required to target all three classes of state.
+columnDivs: document.querySelectorAll('.column-div'),
+
+//Modal Elements:
+modalWindow: document.getElementById('new-task-modal-window'),
+editTaskModal: document.querySelector('.edit-task-modal-window'),
+cancelEditBtn: document.getElementById('cancel-edit-btn'),
+cancelAddTaskBtn: document.getElementById('cancel-add-task-btn'),
+saveTaskChangesBtn: document.getElementById('save-task-changes-btn'),
+deleteTaskBtn: document.getElementById('delete-task-btn'),
+createNewTaskBtn: document.getElementById('create-task-btn')
+};
 
 let activeBoard = ""
 
@@ -31,12 +55,12 @@ function fetchAndDisplayBoardsAndTasks() {
   displayBoards(boards);
   if (boards.length > 0) {
     const localStorageBoard = JSON.parse(localStorage.getItem("activeBoard"))
-    activeBoard = localStorageBoard ? localStorageBoard ;  boards[0]; 
-    elements.headerBoardName.textContent = activeBoard
-    styleActiveBoard(activeBoard)
+    activeBoard = localStorageBoard ? localStorageBoard :  boards[0]; 
+    elements.headerBoardName.textContent = activeBoard;
+    styleActiveBoard(activeBoard);
     refreshTasksUI();
-  }
-}
+  };
+};
 
 // Creates different boards in the DOM
 // TASK: Fix Bugs
@@ -47,23 +71,23 @@ function displayBoards(boards) {
     const boardElement = document.createElement("button");
     boardElement.textContent = board;
     boardElement.classList.add("board-btn");
-    boardElement.click()  { 
+    boardElement.addEventListener('click', function()  { 
       elements.headerBoardName.textContent = board;
       filterAndDisplayTasksByBoard(board);
-      activeBoard = board //assigns active board
-      localStorage.setItem("activeBoard", JSON.stringify(activeBoard))
-      styleActiveBoard(activeBoard)
-    };
+      activeBoard = board; //assigns active board
+      localStorage.setItem("activeBoard", JSON.stringify(activeBoard));
+      styleActiveBoard(activeBoard);
+    });
     boardsContainer.appendChild(boardElement);
   });
 
-}
+};
 
 // Filters tasks corresponding to the board name and displays them on the DOM.
 // TASK: Fix Bugs
 function filterAndDisplayTasksByBoard(boardName) {
   const tasks = getTasks(); // Fetch tasks from a simulated local storage function
-  const filteredTasks = tasks.filter(task => task.board = boardName);
+  const filteredTasks = tasks.filter(task => task.board === boardName);
 
   // Ensure the column titles are set outside of this function or correctly initialized before this function runs
 
@@ -78,21 +102,21 @@ function filterAndDisplayTasksByBoard(boardName) {
     const tasksContainer = document.createElement("div");
     column.appendChild(tasksContainer);
 
-    filteredTasks.filter(task => task.status = status).forEach(task => { 
+    filteredTasks.filter(task => task.status === status).forEach(task => { 
       const taskElement = document.createElement("div");
       taskElement.classList.add("task-div");
       taskElement.textContent = task.title;
       taskElement.setAttribute('data-task-id', task.id);
 
       // Listen for a click event on each task and open a modal
-      taskElement.click() => { 
+      taskElement.addEventListener('click', function() { 
         openEditTaskModal(task);
       });
 
       tasksContainer.appendChild(taskElement);
     });
   });
-}
+};
 
 
 function refreshTasksUI() {
@@ -102,13 +126,13 @@ function refreshTasksUI() {
 // Styles the active board by adding an active class
 // TASK: Fix Bugs
 function styleActiveBoard(boardName) {
-  document.querySelectorAll('.board-btn').foreach(btn => { 
+  document.querySelectorAll('.board-btn').forEach(btn => { 
     
     if(btn.textContent === boardName) {
-      btn.add('active') 
+      btn.classList.add('active') 
     }
     else {
-      btn.remove('active'); 
+      btn.classList.remove('active'); 
     }
   });
 }
@@ -259,3 +283,33 @@ function init() {
   document.body.classList.toggle('light-theme', isLightTheme);
   fetchAndDisplayBoardsAndTasks(); // Initial display of boards and tasks
 }
+
+/** Edits made to index.js file to address errors/user stories
+ * 
+ *  - lines 3 & 4, correctly import functions from ./utils/taskFunctions.js & initialData from ./initialData.js
+ * 
+ *  - Within the elements const variable, I had to find the relevant ID's and occasionally classes (in the case of the columns div & edit task modal)
+ *    to correctly obtain the targets from the HTML DOM elements so that they could be dynamically manipulated by the JS
+ * 
+ *  - No edits/debugging required on the fetchAndDisplayBoardsAndTasks function that I could identify.
+ * 
+ *  - Line 74: Within the Display Boards function: needed to correct/fix the syntax of the boardElement event listener.
+ *  - Line 80: Added the missing close bracket to complete the function syntax. Also added some semi-colons for personal legibility preferences within the function code block.
+ * 
+ *  - Line 90: Fixed the equivalency check. "===" iso "=".
+ * 
+ *  - Line 105: Fixed the equivalency check on task.status. "===" iso "=".
+ * 
+ *  - Line 112: Corrected the eventListener function on the taskElement on click.
+ *  
+ *  - Line 129: changed capitalisation on the forEach function
+ * 
+ *  - Line 132: changed to correct syntax so the button targets the classlist for the add function
+ * 
+ *  - Line 135: did the same for the remove button, i.e. corrected syntax/target.
+ * 
+ *  - 
+ * 
+ * 
+ * 
+ */

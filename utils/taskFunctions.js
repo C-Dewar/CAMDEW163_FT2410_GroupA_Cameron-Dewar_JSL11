@@ -7,7 +7,7 @@ export const getTasks = () => {
 };
 
 // Simulate saving tasks to localStorage
-const saveTasks = (tasks) => {
+export const saveTasks = (tasks) => {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
@@ -48,3 +48,9 @@ export const deleteTask = (id) => {
   // Previously: location.reload(); Now: We'll refresh the UI instead.
   return updatedTasks; // Optionally return the updated tasks list for further processing
 };
+
+
+/** Changes to this file that were required:
+ * 
+ * - add export to the saveTasks function so that it could be imported to the index.js file correctly
+ * */ 
