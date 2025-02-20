@@ -2,14 +2,14 @@
 
 // Simulate fetching tasks from localStorage
 export const getTasks = () => {
-  const tasks = localStorage.getItem('tasks');
+  const tasks = localStorage.getItem("tasks");
   return tasks ? JSON.parse(tasks) : [];
 };
 
 // Simulate saving tasks to localStorage
-export const saveTasks = (tasks) => {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-};
+export function saveTasks(tasks) {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 export const createNewTask = (task) => {
   const tasks = getTasks(); // Retrieve existing tasks
@@ -19,38 +19,36 @@ export const createNewTask = (task) => {
   return newTask; // Return the newly created task
 };
 
-
 export const patchTask = (id, updates) => {
   const tasks = getTasks();
-  const taskIndex = tasks.findIndex(task => task.id === id);
+  const taskIndex = tasks.findIndex((task) => task.id === id);
   if (taskIndex > -1) {
-      tasks[taskIndex] = { ...tasks[taskIndex], ...updates };
-      saveTasks(tasks);
-      // Previously: location.reload(); Now: We'll refresh the UI instead.
+    tasks[taskIndex] = { ...tasks[taskIndex], ...updates };
+    saveTasks(tasks);
+    // Previously: location.reload(); Now: We'll refresh the UI instead.
   }
   return tasks; // Optionally return the updated tasks list for further processing
 };
 
-export const putTask = (id, updatedTask) => {
+export const putTask = (updatedTask) => {
   const tasks = getTasks();
-  const taskIndex = tasks.findIndex((task) => task.id === id);
+  const taskIndex = tasks.findIndex((task) => task.id === updatedTask.id);
   if (taskIndex > -1) {
     tasks[taskIndex] = updatedTask;
     saveTasks(tasks);
   }
-  location.reload(); // Or better, re-render tasks without reloading
+  return tasks; // Or better, re-render tasks without reloading
 };
 
 export const deleteTask = (id) => {
   const tasks = getTasks();
-  const updatedTasks = tasks.filter(task => task.id !== id);
+  const updatedTasks = tasks.filter((task) => task.id !== id);
   saveTasks(updatedTasks);
   // Previously: location.reload(); Now: We'll refresh the UI instead.
   return updatedTasks; // Optionally return the updated tasks list for further processing
 };
 
-
 /** Changes to this file that were required:
- * 
+ *
  * - add export to the saveTasks function so that it could be imported to the index.js file correctly
- * */ 
+ * */
