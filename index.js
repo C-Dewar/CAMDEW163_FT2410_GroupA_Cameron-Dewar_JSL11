@@ -183,15 +183,13 @@ function setupEventListeners() {
   });
 
   // Cancel adding new task event listener
-  elements.cancelAddTaskBtn.addEventListener("click", () => {
+  elements.cancelAddTaskBtn.addEventListener("click", function () {
     toggleModal(false);
-    elements.filterDiv.style.display = "none"; // Also hide the filter overlay
   });
 
   // Clicking outside the modal to close it
   elements.filterDiv.addEventListener("click", function () {
-    toggleModal(false);
-    elements.filterDiv.style.display = "none"; // Also hide the filter overlay
+    toggleModal(false, elements.editTaskModal); // Also hide the filter overlay
   });
   //Show sidebar event listener
   elements.showSideBarBtn.addEventListener("click", function () {
@@ -222,6 +220,7 @@ function setupEventListeners() {
 // Toggles tasks modal
 // Task: Fix bugs
 function toggleModal(show, modal = elements.modalWindow) {
+  elements.filterDiv.style.display = show ? "block" : "none";
   modal.style.display = show ? "block" : "none";
 }
 /*************************************************************************************************************************************************
