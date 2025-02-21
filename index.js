@@ -347,7 +347,7 @@ function init() {
  *  - Within the elements const elements variable, I had to find the relevant ID's and occasionally classes (in the case of the columns div & edit task modal)
  *    to correctly obtain the targets from the HTML DOM elements so that they could be dynamically manipulated by the JS
  *
- *  - Line 34: changed semi-colon to colon to correct syntax within fetchAndDisplayBoardsAndTasks function
+ *  - Line 64: changed semi-colon to colon to correct syntax within fetchAndDisplayBoardsAndTasks function
  *
  *  - Line 76: Corrected syntax to target the board parameter by placing brackets around it
  *
@@ -371,26 +371,26 @@ function init() {
  *
  *  - Lines 173 - 216: Corrected eventListeners syntax and ensured that they called/corresponded to the appropriate functions and display elements respectively.
  *
- *  - Line 223: Fixed the toggle modal function and added a line to ensure the filterDiv was appropriately displayed relative to the toggleModal state.
+ *  - Line 228: Fixed the toggle modal function and added a line to ensure the filterDiv was appropriately displayed relative to the toggleModal state.
  *
- *  - Lines 231 - 252: Coded logic for the addTask function and created const variables to target the correct elements  (titleInput/descriptionInput/statusInput)
+ *  - Lines 236 - 265: Coded logic for the addTask function and created const variables to target the correct elements  (titleInput/descriptionInput/statusInput)
  *                     I also made use of two if statements, the first to log an error to the console if either of those elements are not present and the second to
  *                     prevent the user from being able to create a blank entry by denying empty fields from being submitted. Alert will pop up if that is the case.
- *  - Lines 265 - 267: Coded logic for the toggle sideBar function to ensure the appropriate visibility of sideBarDiv/showSideBarBtn/hideSideBarBtn relative to its current state.
+ *  - Lines 270 - 272: Coded logic for the toggle sideBar function to ensure the appropriate visibility of sideBarDiv/showSideBarBtn/hideSideBarBtn relative to its current state.
  *
- *  - Lines 271 - 273: Coded logic for toggle theme function which checks the state of the currently selected theme by using the appropriate element and saves it to local storage.
+ *  - Lines 276 - 278: Coded logic for toggle theme function which checks the state of the currently selected theme by using the appropriate element and saves it to local storage.
  *
- *  - Lines 278 - 289: Coded logic for openEditTaskModal function to grab the appropriate elements from the DOM, fills the modal inputs with that element information/task details
+ *  - Lines 283 - 296: Coded logic for openEditTaskModal function to grab the appropriate elements from the DOM, fills the modal inputs with that element information/task details
  *                     and then assigns the task id to the saveTaskChangesBtn & deleteTaskChangesBtn respectively so that they are called on the appropriate Id when clicked.
  *
- *  - Lines 296 - 310: Coded logic for the saveTaskChangesHandler function.
+ *  - Lines 301 - 315: Coded logic for the saveTaskChangesHandler function.
  *                     User inputs:
  *                     taskId -> retrieves the task id via the data-task-id attribute of the element that triggered the event. (i.e. save button, to which the unique task Id was assigned)
  *                     titleInput, descriptionInput & statusInput -> retrieves the appropriate HTML elements from the DOM of the task modal inputs that are being edited
  *                     const updatedTask -> Assigns the values of the edited fields to a new object
  *                     patchTask -> used to update specific fields of the edited task and I had to parseInt the resulting updated Task value, as that Id was a string, instead of an integer.
  *                     toggleModal called to close the modal upon saving.
- *  - Lines 314 - 319: Coded logic for a deleteTaskHandler which much like the saveTaskChangesHandler, uses the getAttribute function to target the unique Id of the currently accessed task to
+ *  - Lines 319 - 323: Coded logic for a deleteTaskHandler which much like the saveTaskChangesHandler, uses the getAttribute function to target the unique Id of the currently accessed task to
  *                     call the deleteTask function on. I once more had to parseInt this unique Id as it was initially a string and wouldn't function correctly as is.
  *
  *
