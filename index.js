@@ -189,8 +189,13 @@ function setupEventListeners() {
 
   // Clicking outside the modal to close it
   elements.filterDiv.addEventListener("click", function () {
-    toggleModal(false, elements.editTaskModal); // Also hide the filter overlay
+    if (elements.modalWindow.style.display === "block") {
+      toggleModal(false); // Close the new task modal when clicking on the filterDiv when the windowModal is open during the addNewTaskBtn being clicked
+    } else if (elements.editTaskModal.style.display === "block") {
+      toggleModal(false, elements.editTaskModal); // Close the edit task modal
+    }
   });
+
   //Show sidebar event listener
   elements.showSideBarBtn.addEventListener("click", function () {
     toggleSidebar(true);
@@ -227,7 +232,7 @@ function toggleModal(show, modal = elements.modalWindow) {
  * COMPLETE FUNCTION CODE
  * **********************************************************************************************************************************************/
 
-function addTask(event) {
+function addTask() {
   const taskTitleInput = elements.modalWindow.querySelector("#title-input");
   const taskDescInput = elements.modalWindow.querySelector("#desc-input");
   const taskStatusInput = elements.modalWindow.querySelector("#select-status");
@@ -237,10 +242,13 @@ function addTask(event) {
     return;
   }
 
-  const taskTitle = taskTitleInput.value;
-  const taskDesc = taskDescInput.value;
+  const taskTitle = taskTitleInput.value.trim();
+  const taskDesc = taskDescInput.value.trim();
   const taskStatus = taskStatusInput.value;
-
+  if (!taskTitle || !taskDesc || !taskStatus) {
+    alert("Please fill in all fields before adding a task.");
+    return;
+  }
   //Assign user input to the task object
   const task = {
     title: taskTitle,
@@ -336,33 +344,56 @@ function init() {
  *
  *  - lines 3 & 4, correctly import functions from ./utils/taskFunctions.js & initialData from ./initialData.js
  *
- *  - Within the elements const variable, I had to find the relevant ID's and occasionally classes (in the case of the columns div & edit task modal)
+ *  - Within the elements const elements variable, I had to find the relevant ID's and occasionally classes (in the case of the columns div & edit task modal)
  *    to correctly obtain the targets from the HTML DOM elements so that they could be dynamically manipulated by the JS
  *
- *  - No edits/debugging required on the fetchAndDisplayBoardsAndTasks function that I could identify.
+ *  - Line 34: changed semi-colon to colon to correct syntax within fetchAndDisplayBoardsAndTasks function
  *
- *  - Line 74: Within the Display Boards function: needed to correct/fix the syntax of the boardElement event listener.
- *  - Line 80: Added the missing close bracket to complete the function syntax. Also added some semi-colons for personal legibility preferences within the function code block.
+ *  - Line 76: Corrected syntax to target the board parameter by placing brackets around it
  *
- *  - Line 90: Fixed the equivalency check. "===" iso "=".
+ *  - Line 80: Corrected the syntax of the boardElement event listener
  *
- *  - Line 105: Fixed the equivalency check on task.status. "===" iso "=".
+ *  - Line 95: Corrected the syntax for both the equivalency check to "===" iso "=" and added brackets to target the task parameter
  *
- *  - Line 112: Corrected the eventListener function on the taskElement on click.
+ *  - Line 99: Corrected the syntax of the column div for each function
  *
- *  - Line 129: changed capitalisation on the forEach function
+ *  - Line 111 & 112: Corrected the syntax of the
  *
- *  - Line 132: changed to correct syntax so the button targets the classlist for the add function
+ *  - Line 119: Corrected the taskElement event listener and ensured that the overall function had the appropriate closure.
  *
- *  - Line 135: did the same for the remove button, i.e. corrected syntax/target.
+ *  - Line 135: Corrected capitalisation/syntax forEach function and added brackets to correctly target the btn with the querySelector.
  *
- *  - Line 147: Corrected the template literal syntax to backticks iso quoatation marks
+ *  - Line 137 & 139: added ".classList" to ensure the correct syntax & ensure the correct/active classList was targeted.
  *
- *  - Line 161: added taskElement to be appended to the tasksContainer
+ *  - Line 146: Corrected the template literal syntax to backticks iso quoatation marks in the column query selector
  *
- *  - Line 169 - 171: Changed the cancel edit button to the correct syntax
+ *  - Line 168: Added taskElement to the appendChild function to ensure it is appropriately ammended to the taskContainer.
  *
- *  - Line 208*: Corrected the syntax of the visibility change on the modal toggle function. Arrow changed to colon.
+ *  - Lines 173 - 216: Corrected eventListeners syntax and ensured that they called/corresponded to the appropriate functions and display elements respectively.
+ *
+ *  - Line 223: Fixed the toggle modal function and added a line to ensure the filterDiv was appropriately displayed relative to the toggleModal state.
+ *
+ *  - Lines 231 - 252: Coded logic for the addTask function and created const variables to target the correct elements  (titleInput/descriptionInput/statusInput)
+ *                     I also made use of two if statements, the first to log an error to the console if either of those elements are not present and the second to
+ *                     prevent the user from being able to create a blank entry by denying empty fields from being submitted. Alert will pop up if that is the case.
+ *  - Lines 265 - 267: Coded logic for the toggle sideBar function to ensure the appropriate visibility of sideBarDiv/showSideBarBtn/hideSideBarBtn relative to its current state.
+ *
+ *  - Lines 271 - 273: Coded logic for toggle theme function which checks the state of the currently selected theme by using the appropriate element and saves it to local storage.
+ *
+ *  - Lines 278 - 289: Coded logic for openEditTaskModal function to grab the appropriate elements from the DOM, fills the modal inputs with that element information/task details
+ *                     and then assigns the task id to the saveTaskChangesBtn & deleteTaskChangesBtn respectively so that they are called on the appropriate Id when clicked.
+ *
+ *  - Lines 296 - 310: Coded logic for the saveTaskChangesHandler function.
+ *                     User inputs:
+ *                     taskId -> retrieves the task id via the data-task-id attribute of the element that triggered the event. (i.e. save button, to which the unique task Id was assigned)
+ *                     titleInput, descriptionInput & statusInput -> retrieves the appropriate HTML elements from the DOM of the task modal inputs that are being edited
+ *                     const updatedTask -> Assigns the values of the edited fields to a new object
+ *                     patchTask -> used to update specific fields of the edited task and I had to parseInt the resulting updated Task value, as that Id was a string, instead of an integer.
+ *                     toggleModal called to close the modal upon saving.
+ *  - Lines 314 - 319: Coded logic for a deleteTaskHandler which much like the saveTaskChangesHandler, uses the getAttribute function to target the unique Id of the currently accessed task to
+ *                     call the deleteTask function on. I once more had to parseInt this unique Id as it was initially a string and wouldn't function correctly as is.
+ *
+ *
  *
  *
  *
